@@ -99,4 +99,32 @@ public class CartServiceImpl implements CartService{
 		orderDto.setCartItems(cartItemDtoList);
 		return orderDto;
 	}
+	
+	public OrderDto increaseProductQuantity(AddProductToCart addProductToCartDto) 
+	{
+		Order activeOrder = orderRepository.findByUserIdAndOrderStatus(addProductToCartDto.getUserId(),OrderStatus.Pending);
+		Optional<Product> optionalProduct = productRepo.findById(addProductToCartDto.getProductId());
+		
+		Optional<CartItems> optionalCartItem = cartItemRepository.findByProductIdAndOrderIdAndUserId(
+				addProductToCartDto.getProductId(), activeOrder.getId(), addProductToCartDto.getUserId());
+		
+		if(optionalProduct.isPresent() && optionalCartItem.isPresent())
+		{
+			CartItems cartItems = optionalCartItem.get();
+			Product product = optionalProduct.get();
+			
+			activeOrder.setAmount(activeOrder.getAmount()+product.getPrice());
+			activeOrder.setTotalAmount(activeOrder.getTotalAmount()+product.getPrice());
+			
+			cartItems.setQuantiy(cartItems.getQuantiy()+1);
+			
+//			if(activeOrder)
+			
+			cartItemRepository.save(cartItems);
+			orderRepository.save(activeOrder);
+			return activeOrder.getOrderDto();
+		}
+		return null;
+	}
+	
 }

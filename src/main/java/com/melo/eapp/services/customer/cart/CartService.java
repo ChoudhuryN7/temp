@@ -10,5 +10,7 @@ public interface CartService {
 	ResponseEntity<?> addProductToCart(AddProductToCart addProductToCartDto);
 	
 	OrderDto getCartByUserId(Long userId);
+	
+	OrderDto increaseProductQuantity(AddProductToCart addProductToCartDto);
 
 }

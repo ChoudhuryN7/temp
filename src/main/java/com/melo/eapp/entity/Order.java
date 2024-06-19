@@ -3,8 +3,10 @@ package com.melo.eapp.entity;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.melo.eapp.Enum.OrderStatus;
+import com.melo.eapp.dto.OrderDto;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -53,4 +55,22 @@ public class Order {
 	
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "order")
 	private List<CartItems> cartItems;
+	
+	
+	public OrderDto getOrderDto() {
+		OrderDto orderDto = new OrderDto();
+		orderDto.setId(id);
+		orderDto.setOrderDescription(OrderDescription);
+		orderDto.setDate(date);
+		orderDto.setAmount(amount);
+		orderDto.setPayment(payment);
+		orderDto.setOrderStatus(orderStatus);
+		orderDto.setTotalAmount(totalAmount);
+		orderDto.setDiscount(discount);
+		orderDto.setTrackingId(trackingId);
+		orderDto.setUserName(this.user.getName());
+		orderDto.setCartItems(cartItems.stream().map(ele ->ele.getCartDto()).collect(Collectors.toList()));
+
+		return orderDto;
+	}
 }

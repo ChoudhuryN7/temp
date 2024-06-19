@@ -37,6 +37,12 @@ public class CartController {
 		OrderDto orderDto = cartService.getCartByUserId(userId);
 		return ResponseEntity.status(HttpStatus.OK).body(orderDto);
 	}
+	
+	@PostMapping("/addition")
+	public ResponseEntity<OrderDto> increaseProductQuantity(@RequestBody AddProductToCart addProductToCart)
+	{
+		return ResponseEntity.status(HttpStatus.CREATED).body(cartService.increaseProductQuantity(addProductToCart));
+	}
 }
 
 
