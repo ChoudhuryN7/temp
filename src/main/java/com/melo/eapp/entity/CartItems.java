@@ -45,7 +45,7 @@ public class CartItems {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Users user;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name ="order_id,order_id = false")
 	private Order order;
 	
